@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<nav>
+  <div class="logo">Moffel</div>
+  <div class="nav-items">
+    <a href="index.html">Home</a> <a href="piano.html">Piano</a> <a href="about.html">About</a> <a href="contact.html">Contact</a>
+  </div>
+</nav>
+<div class="piano">
+  <div data-note="C" class="key white"><a class="text">z</a></div>
+  <div data-note="Db" class="key black"><a class="text2">s</a></div>
+  <div data-note="D" class="key white"><a class="text">x</a></div>
+  <div data-note="Eb" class="key black"><a class="text2">d</a></div>
+  <div data-note="E" class="key white"><a class="text">c</a></div>
+  <div data-note="F" class="key white"><a class="text">v</a></div>
+  <div data-note="Gb" class="key black"><a class="text2">g</a></div>
+  <div data-note="G" class="key white"><a class="text">b</a></div>
+  <div data-note="Ab" class="key black"><a class="text2">h</a></div>
+  <div data-note="A" class="key white"><a class="text">n</a></div>
+  <div data-note="Bb" class="key black"><a class="text2">j</a></div>
+  <div data-note="B" class="key white"><a class="text">m</a></div>
+</div>
+
+<audio id="C" src="notes/C.mp3"></audio>
+<audio id="Db" src="notes/CD.mp3"></audio>
+<audio id="D" src="notes/D.mp3"></audio>
+<audio id="Eb" src="notes/DE.mp3"></audio>
+<audio id="E" src="notes/E.mp3"></audio>
+<audio id="F" src="notes/F.mp3"></audio>
+<audio id="Gb" src="notes/FG.mp3"></audio>
+<audio id="G" src="notes/G.mp3"></audio>
+<audio id="Ab" src="notes/GA.mp3"></audio>
+<audio id="A" src="notes/Av2.mp3"></audio>
+<audio id="Bb" src="notes/AB.mp3"></audio>
+<audio id="B" src="notes/Bv2.mp3"></audio>
+</body>
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #5bbe5d;
+    margin: 0;
+    min-height: 100vh;
+  }
+  .piano {
+    display: flex;
+    position: absolute;
+    left: 250px;
+    border-radius: 20px;
+  }
+  .key {
+    height: calc(var(--width) * 4);
+    width: var(--width);
+    text-align: center;
+    border-radius: 5px 5px 20px 20px;
+  }
+
+  .white {
+    --width: 100px;
+    background-color: white;
+    border: 1px solid #333;
+  }
+
+  .white.active {
+    background-color: #CCC;
+  }
+  .black {
+    --width: 60px;
+    background-color: black;
+    margin-left: calc(var(--width) / -2);
+    margin-right: calc(var(--width) / -2);
+    z-index: 2;
+    color: white;
+  }
+
+  .black.active {
+    background-color: #333;
+  }
+
+  .text{
+    position: relative;
+    bottom: -350px;
+  }
+
+  .text2{
+    position: relative;
+    bottom: -200px;
+  }
+</style>
+<script>
+  const WHITE_KEYS = ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+  const BLACK_KEYS = ['s', 'd', 'g', 'h', 'j']
+
+  const keys = document.querySelectorAll('.key')
+  const whiteKeys = document.querySelectorAll('.key.white')
+  const blackKeys = document.querySelectorAll('.key.black')
+
+  keys.forEach(key => {
+    key.addEventListener('click', () => playNote(key))
+  })
+
+  document.addEventListener('keydown', e => {
+    if (e.repeat) return
+    const key = e.key
+    const whiteKeyIndex = WHITE_KEYS.indexOf(key)
+    const blackKeyIndex = BLACK_KEYS.indexOf(key)
+
+    if (whiteKeyIndex > -1) playNote(whiteKeys[whiteKeyIndex])
+    if (blackKeyIndex > -1) playNote(blackKeys[blackKeyIndex])
+  })
+
+  function playNote(key) {
+    const noteAudio = document.getElementById(key.dataset.note)
+    noteAudio.currentTime = 0
+    noteAudio.play()
+    key.classList.add('active')
+    noteAudio.addEventListener('ended', () => {
+      key.classList.remove('active')
+    })
+  }
+</script>
+</html>

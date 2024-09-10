@@ -72,6 +72,8 @@ button {
   background: #000;
   cursor: pointer;
   border-radius: 50px;
+  width: 250px;
+  margin: 5px;
 }
 
 button:hover {
